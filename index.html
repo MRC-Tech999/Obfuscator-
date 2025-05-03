@@ -1,9 +1,9 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Obfuscateur PHP</title>
+    <title>Obfuscateur PHP - Style Hacker</title>
     <style>
         body {
             background-color: #0a0a0a;
@@ -11,6 +11,9 @@
             font-family: Consolas, monospace;
             text-align: center;
             padding: 20px;
+            margin: 0;
+            height: 100vh;
+            overflow: hidden;
         }
         textarea {
             width: 80%;
@@ -49,58 +52,151 @@
     </style>
 </head>
 <body>
-    <h1>Obfuscateur PHP - Style Hacker</h1>
-    <p>Entrez votre code PHP ci-dessous :</p>
-    <textarea id="inputCode" placeholder="Exemple : echo 'Hello World!';"></textarea><br>
-    <button onclick="obfuscateCode()">Obfusquer le code</button>
 
-    <div id="obfuscatedCode"></div>
-    <button id="copyButton" onclick="copyToClipboard()">Copier le code obfusqué</button>
+<h1>Obfuscateur PHP - Style Hacker</h1>
+<p>Entrez votre code PHP ci-dessous :</p>
+<textarea id="inputCode" placeholder="Exemple : echo 'Hello World!';"></textarea><br>
+<button onclick="obfuscateCode()">Obfusquer le code</button>
 
-    <script>
-        async function obfuscateCode() {
-            const code = document.getElementById('inputCode').value;
-            const url = 'https://bheithaus-unicode-obfuscator.p.rapidapi.com/chop/bop';
-            const headers = {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'x-rapidapi-host': 'bheithaus-unicode-obfuscator.p.rapidapi.com',
-                'x-rapidapi-key': 'ab42dda446mshde4ba65d25b85fdp13b83ejsn3965c0519b7d'
-            };
-            const body = new URLSearchParams({ custom: code });
+<div id="obfuscatedCode"></div>
+<button id="copyButton" onclick="copyToClipboard()">Copier le code obfusqué</button>
 
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: headers,
-                    body: body
-                });
-                const data = await response.json();
-                const obfuscatedCode = data.obfuscated_code;
+<script>
+    async function obfuscateCode() {
+        const code = document.getElementById('inputCode').value;
+        const url = 'https://bheithaus-unicode-obfuscator.p.rapidapi.com/chop/bop';
+        const headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'x-rapidapi-host': 'bheithaus-unicode-obfuscator.p.rapidapi.com',
+            'x-rapidapi-key': 'ab42dda446mshde4ba65d25b85fdp13b83ejsn3965c0519b7d'
+        };
+        const body = new URLSearchParams({ custom: code });
 
-                if (obfuscatedCode) {
-                    document.getElementById('obfuscatedCode').textContent = obfuscatedCode;
-                    document.getElementById('obfuscatedCode').style.display = 'block';
-                    document.getElementById('copyButton').style.display = 'inline-block';
-                } else {
-                    alert('Erreur lors de l\'obfuscation du code.');
-                }
-            } catch (error) {
-                console.error('Erreur:', error);
-                alert('Une erreur est survenue.');
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: headers,
+                body: body
+            });
+            const data = await response.json();
+            const obfuscatedCode = data.obfuscated_code;
+
+            if (obfuscatedCode) {
+                document.getElementById('obfuscatedCode').textContent = obfuscatedCode;
+                document.getElementById('obfuscatedCode').style.display = 'block';
+                document.getElementById('copyButton').style.display = 'inline-block';
+            } else {
+                alert('Erreur lors de l\'obfuscation du code.');
             }
+        } catch (error) {
+            console.error('Erreur:', error);
+            alert('Une erreur est survenue.');
         }
+    }
 
-        function copyToClipboard() {
-            const code = document.getElementById('obfuscatedCode').textContent;
-            navigator.clipboard.writeText(code)
-                .then(() => {
-                    alert('Code copié dans le presse-papiers.');
-                })
-                .catch(err => {
-                    console.error('Erreur de copie:', err);
-                    alert('Impossible de copier le code.');
-                });
+    function copyToClipboard() {
+        const code = document.getElementById('obfuscatedCode').textContent;
+        navigator.clipboard.writeText(code)
+            .then(() => {
+                alert('Code copié dans le presse-papiers.');
+            })
+            .catch(err => {
+                console.error('Erreur de copie:', err);
+                alert('Impossible de copier le code.');
+            });
+    }
+</script>
+
+<script>
+    "use strict";
+    (function(){
+        function $ce(tagName){
+            return document.createElement(tagName);
+        };
+
+        function getRandomInt(min,max){
+            return Math.floor(Math.random()*(max-min+1))+min;
+        };
+
+        function appendStyle(style){
+            const el=$ce("style");
+            el.type="text/css";
+            if(el.styleSheet){
+                el.styleSheet.cssText=style;
+            }else{
+                el.appendChild(document.createTextNode(style));
+            }
+            document.getElementsByTagName("head")[0].appendChild(el);
+            return el;
+        };
+
+        function onEnd(el,callback,ename){
+            const func=function(e){
+                if(el==e.srcElement){
+                    el.removeEventListener(ename,func);
+                    if(callback){callback(e);}
+                }
+            };
+            el.addEventListener(ename,func);
+        };
+
+        function onAnimationEnd(el,callback){
+            onEnd(el,callback,"animationend");
+        };
+
+        function insertEmoji(px){
+            const yy=0;
+            const style=`
+    #${px.id}.ctower{
+        position:absolute;
+        left:0;
+        top:0;
+        width:${px.size}em;
+        height:100%;
+    }
+    #${px.id}.ctower .cbox{
+        position:relative;
+        width:100%;
+        height:${px.size}em;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        transform:translateY(-100%);
+    }
+    #${px.id}.ctower .char{
+        display:inline-block;
+        font-size:${px.size}em;
+        line-height:1.1;
+    }
+    #${px.id}.ctower{
+        animation-name:kf-ctower-${px.id};
+        animation-fill-mode:forwards;
+        animation-duration:${px.dura}s;
+        animation-timing-function:linear;
+    }
+    @keyframes kf-ctower-${px.id}{
+        0%{
+            left:0%;
+            transform:translate(-${100+px.wk}%);
         }
-    </script>
-</body>
-</html>
+        100%{
+            left:100%;
+            transform:translate(${px.wk}%);
+        }
+    }
+    #${px.id}.ctower .cbox{
+        animation-name:kf-cbox-${px.id};
+        animation-fill-mode:forwards;
+        animation-duration:${px.dura}s;
+    }
+    @keyframes kf-cbox-${px.id}{
+        0%{
+            top:${100-20*px.hk-yy}%;
+            animation-timing-function:ease-in;
+        }
+        15%{
+            top:${100-0*px.hk-yy}%;
+            animation-timing-function:e
+::contentReference[oaicite:0]{index=0}
+ 
+ 
