@@ -1,0 +1,106 @@
+ <!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obfuscateur PHP</title>
+    <style>
+        body {
+            background-color: #0a0a0a;
+            color: #00ff00;
+            font-family: Consolas, monospace;
+            text-align: center;
+            padding: 20px;
+        }
+        textarea {
+            width: 80%;
+            height: 200px;
+            background-color: #1a1a1a;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #333;
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #00ff00;
+            color: #333;
+        }
+        #obfuscatedCode {
+            display: none;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #1a1a1a;
+            border: 1px solid #00ff00;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        #copyButton {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Obfuscateur PHP - Style Hacker</h1>
+    <p>Entrez votre code PHP ci-dessous :</p>
+    <textarea id="inputCode" placeholder="Exemple : echo 'Hello World!';"></textarea><br>
+    <button onclick="obfuscateCode()">Obfusquer le code</button>
+
+    <div id="obfuscatedCode"></div>
+    <button id="copyButton" onclick="copyToClipboard()">Copier le code obfusqué</button>
+
+    <script>
+        async function obfuscateCode() {
+            const code = document.getElementById('inputCode').value;
+            const url = 'https://bheithaus-unicode-obfuscator.p.rapidapi.com/chop/bop';
+            const headers = {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'x-rapidapi-host': 'bheithaus-unicode-obfuscator.p.rapidapi.com',
+                'x-rapidapi-key': 'ab42dda446mshde4ba65d25b85fdp13b83ejsn3965c0519b7d'
+            };
+            const body = new URLSearchParams({ custom: code });
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: headers,
+                    body: body
+                });
+                const data = await response.json();
+                const obfuscatedCode = data.obfuscated_code;
+
+                if (obfuscatedCode) {
+                    document.getElementById('obfuscatedCode').textContent = obfuscatedCode;
+                    document.getElementById('obfuscatedCode').style.display = 'block';
+                    document.getElementById('copyButton').style.display = 'inline-block';
+                } else {
+                    alert('Erreur lors de l\'obfuscation du code.');
+                }
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Une erreur est survenue.');
+            }
+        }
+
+        function copyToClipboard() {
+            const code = document.getElementById('obfuscatedCode').textContent;
+            navigator.clipboard.writeText(code)
+                .then(() => {
+                    alert('Code copié dans le presse-papiers.');
+                })
+                .catch(err => {
+                    console.error('Erreur de copie:', err);
+                    alert('Impossible de copier le code.');
+                });
+        }
+    </script>
+</body>
+</html>
