@@ -1,252 +1,119 @@
-<!doctype html>
-<html>
-
+<!DOCTYPE html>
+<html lang="fr">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Recevez un email temporaire gratuit avec MARC-Tech et envoyez des emails facilement.">
+  <meta name="keywords" content="email temporaire, temp mail, email jetable, marc-tech, mailsac">
+  <meta name="author" content="Marc-Tech">
+  <meta name="robots" content="index, follow">
+  <title>Temporary Email + Envoi - MARC-Tech</title>
 
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-
-<title>Marc-Tech : Bouncing Emoji</title>
-
-<style>
-*,
-*::before,
-*::after{
-	box-sizing:border-box;
-}
-body{
-	position:relative;
-	margin:0;
-	padding:0;
-	width:100vw;
-	height:100vh;
-	background:linear-gradient(
-		to bottom,#fec 0%,#fff 100%);
-	overflow:hidden;
-}
-.info{
-	position:relative;
-	margin:30px;
-	padding:30px;
-	font-family:"Times New Roman";
-	color:orange;
-	border:1px solid orange;
-	background:rgba(255,255,255,0.8);
-	z-index:100;
-}
-.info a{
-	color:orange;
-	font-weight:bold;
-}
-.info a:hover{
-	color:#c18b28;
-}
-.info .title{
-	margin-bottom:15px;
-	font-size:36px;
-}
-.info .desc{
-	font-size:24px;
-}
-</style>
-
-<script>
-"use strict";
-(function(){
-	function $ce(tagName){
-		return document.createElement(tagName);
-	};
-
-	function getRandomInt(min,max){
-		return Math.floor(Math.random()*(max-min+1))+min;
-	};
-
-	function appendStyle(style){
-		const el=$ce("style");
-		el.type="text/css";
-		if(el.styleSheet){
-			el.styleSheet.cssText=style;
-		}else{
-			el.appendChild(document.createTextNode(style));
-		}
-		document.getElementsByTagName("head")[0].appendChild(el);
-		return el;
-	};
-
-	function onEnd(el,callback,ename){
-		const func=function(e){
-			if(el==e.srcElement){
-				el.removeEventListener(ename,func);
-				if(callback){callback(e);}
-			}
-		};
-		el.addEventListener(ename,func);
-	};
-
-	function onAnimationEnd(el,callback){
-		onEnd(el,callback,"animationend");
-	};
-
-	function insertEmoji(px){
-		const yy=0;
-		const style=`
-#${px.id}.ctower{
-	position:absolute;
-	left:0;
-	top:0;
-	width:${px.size}em;
-	height:100%;
-}
-#${px.id}.ctower .cbox{
-	position:relative;
-	width:100%;
-	height:${px.size}em;
-	display:flex;
-	justify-content:center;
-	align-items:center;
-	transform:translateY(-100%);
-}
-#${px.id}.ctower .char{
-	display:inline-block;
-	font-size:${px.size}em;
-	line-height:1.1;
-}
-#${px.id}.ctower{
-	animation-name:kf-ctower-${px.id};
-	animation-fill-mode:forwards;
-	animation-duration:${px.dura}s;
-	animation-timing-function:linear;
-}
-@keyframes kf-ctower-${px.id}{
-	0%{
-		left:0%;
-		transform:translate(-${100+px.wk}%);
-	}
-	100%{
-		left:100%;
-		transform:translate(${px.wk}%);
-	}
-}
-#${px.id}.ctower .cbox{
-	animation-name:kf-cbox-${px.id};
-	animation-fill-mode:forwards;
-	animation-duration:${px.dura}s;
-}
-@keyframes kf-cbox-${px.id}{
-	0%{
-		top:${100-20*px.hk-yy}%;
-		animation-timing-function:ease-in;
-	}
-	15%{
-		top:${100-0*px.hk-yy}%;
-		animation-timing-function:ease-out;
-	}
-	30%{
-		top:${100-15*px.hk-yy}%;
-		animation-timing-function:ease-in;
-	}
-	45%{
-		top:${100-0*px.hk-yy}%;
-		animation-timing-function:ease-out;
-	}
-	60%{
-		top:${100-10*px.hk-yy}%;
-		animation-timing-function:ease-in;
-	}
-	75%{
-		top:${100-0*px.hk-yy}%;
-		animation-timing-function:ease-out;
-	}
-	90%{
-		top:${100-7*px.hk-yy}%;
-		animation-timing-function:ease-in;
-	}
-	100%{
-		top:${100-0*px.hk-yy}%;
-	}
-}
-#${px.id}.ctower .char{
-	animation-name:kf-char-${px.id};
-	animation-fill-mode:forwards;
-	animation-duration:${px.spin}s;
-	animation-iteration-count:infinite;
-	animation-timing-function:linear;
-}
-@keyframes kf-char-${px.id}{
-	0%{
-		transform:rotateZ(0);
-	}
-	100%{
-		transform:rotateZ(360deg);
-	}
-}
-`;
-		const el_style=appendStyle(style);
-
-		const el_char=$ce("div");
-		el_char.className="char";
-		el_char.innerHTML=px.char;
-
-		const el_cbox=$ce("div");
-		el_cbox.className="cbox";
-		el_cbox.appendChild(el_char);
-
-		const el_ctower=$ce("div");
-		el_ctower.id=px.id;
-		el_ctower.className="ctower";
-		el_ctower.appendChild(el_cbox);
-
-		onAnimationEnd(el_ctower,function(){
-			el_ctower.remove();
-			el_style.remove();
-		});
-
-		document.body.appendChild(el_ctower);
-	};
-
-	const emojix=[
-		"😀","😃","😄","😁","😆","😅","😂","🤣","😊","😇",
-		"🙂","🙃","😉","😌","😍","😘","😗","😙","😚","😋",
-		"😛","😝","😜","🤪","🤨","🧐","🤓","😎","🤩","😏",
-		"😒","😞","😔","😟","😕","🙁","😣","😖","😫","😩",
-		"😢","😭","😤","😠","😡","🤬","🤯","😳","😱","😨",
-		"😰","😥","😓","🤗","🤔","😑","😬","🙄","😲","😴",
-		"🤤","😪","😵","😵‍","🤐","🤢","😷","🤒","🤕","🤑",
-		"🤠","😈"];
-
-	let idx=0;
-	const timer_id=setInterval(function(){
-		if(document.querySelectorAll(".ctower").length<10){
-			idx++;
-			const id="id"+(10000+idx);
-			const px={
-				id,
-				char:emojix[getRandomInt(0,emojix.length-1)],
-				size:getRandomInt(4,10),
-				dura:getRandomInt(4,8),
-				spin:getRandomInt(0.8,5),
-				wk:getRandomInt(20,100),
-				hk:getRandomInt(2,5)
-			};
-			insertEmoji(px);
-		}
-	},1000);
-})();
-</script>
-
+  <style>
+    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; color: #333; }
+    .email-box, .send-box { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .email { font-weight: bold; color: #007bff; }
+    button { padding: 10px 15px; margin: 5px 0; background: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    input, textarea { width: 100%; padding: 10px; margin: 5px 0 15px; border: 1px solid #ccc; border-radius: 5px; }
+    .message { margin-top: 10px; background: #eef; padding: 10px; border-radius: 5px; }
+  </style>
 </head>
-
 <body>
+  <h1>Email Temporaire & Envoi (MARC-Tech)</h1>
 
-<!-- [BEGIN] info -->
-<div class="info">
-	<div class="title">Marc-Tech : Bouncing Emoji</div>
-	<div class="desc">This is a sample HTML page for
-		<a href="http://www.phpkobo.com/html-obfuscator" target="_blank">HTML Obfuscator</a>
-	</div>
-</div>
-<!-- [END] info -->
+  <div class="email-box">
+    <p>Email temporaire : <span class="email" id="emailDisplay"></span></p>
+    <button onclick="getMessages()">Actualiser</button>
+    <button onclick="copyEmail()">Copier l'email</button>
+  </div>
 
+  <div id="messages"></div>
+
+  <div class="send-box">
+    <h3>Envoyer un email</h3>
+    <label>Destinataire :</label>
+    <input type="email" id="toEmail" placeholder="ex: destinataire@mail.com" required>
+    <label>Expéditeur (votre email temporaire) :</label>
+    <input type="email" id="fromEmail" placeholder="ex: votremail@mailsac.com" required>
+    <label>Sujet :</label>
+    <input type="text" id="subject" placeholder="Sujet de l'email" required>
+    <label>Message :</label>
+    <textarea id="body" rows="4" placeholder="Tapez votre message ici..." required></textarea>
+    <button onclick="sendEmail()">Envoyer</button>
+    <div id="sendStatus"></div>
+  </div>
+
+  <script>
+    let tempEmail = generateEmail();
+    document.getElementById("emailDisplay").textContent = tempEmail;
+
+    function generateEmail() {
+      const random = Math.random().toString(36).substring(2, 10);
+      return `${random}@mailsac.com`;
+    }
+
+    function copyEmail() {
+      navigator.clipboard.writeText(tempEmail).then(() => {
+        alert("Email copié !");
+      });
+    }
+
+    function getMessages() {
+      fetch(`https://fuck-you.mrc-tech.workers.dev/messages?email=${tempEmail}`)
+        .then(res => res.json())
+        .then(data => {
+          const container = document.getElementById("messages");
+          container.innerHTML = "";
+          if (!data.length) {
+            container.innerHTML = "<p>Aucun message reçu pour l’instant.</p>";
+            return;
+          }
+          data.forEach(msg => {
+            const msgEl = document.createElement("div");
+            msgEl.className = "message";
+            msgEl.innerHTML = `<strong>De:</strong> ${msg.from}<br><strong>Sujet:</strong> ${msg.subject}<br>`;
+            container.appendChild(msgEl);
+          });
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Erreur lors de la récupération des messages.");
+        });
+    }
+
+    function sendEmail() {
+      const sendTo = document.getElementById("toEmail").value;
+      const replyTo = document.getElementById("fromEmail").value;
+      const subject = document.getElementById("subject").value;
+      const body = document.getElementById("body").value;
+
+      const payload = {
+        sendTo: sendTo,
+        replyTo: replyTo,
+        isHtml: false,
+        title: subject,
+        body: body
+      };
+
+      fetch("https://fuck-you.mrc-tech.workers.dev/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      })
+        .then(res => res.json())
+        .then(response => {
+          document.getElementById("sendStatus").innerHTML = response.success
+            ? "<p style='color:green;'>Email envoyé avec succès !</p>"
+            : "<p style='color:red;'>Échec de l'envoi de l'email.</p>";
+        })
+        .catch(err => {
+          console.error(err);
+          document.getElementById("sendStatus").innerHTML = "<p style='color:red;'>Erreur d’envoi.</p>";
+        });
+    }
+  </script>
 </body>
-
 </html>
