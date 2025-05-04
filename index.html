@@ -60,7 +60,7 @@
     }
 
     function getMessages() {
-      fetch(`https://fuck-you.mrc-tech.workers.dev/messages?email=${tempEmail}`)
+      fetch(`https://holy-frog-e196.mrc-tech.workers.dev/messages?email=${tempEmail}`)
         .then(res => res.json())
         .then(data => {
           const container = document.getElementById("messages");
@@ -96,7 +96,7 @@
         body: body
       };
 
-      fetch("https://fuck-you.mrc-tech.workers.dev/send-email", {
+      fetch("https://holy-frog-e196.mrc-tech.workers.dev/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
