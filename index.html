@@ -3,117 +3,96 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Recevez un email temporaire gratuit avec MARC-Tech et envoyez des emails facilement.">
+  <meta name="description" content="Recevez un email temporaire gratuit en un clic avec Temporary Email - MARC-Tech. Pratique, rapide et sans inscription.">
   <meta name="keywords" content="email temporaire, temp mail, email jetable, marc-tech, mailsac">
   <meta name="author" content="Marc-Tech">
+  <meta name="google-site-verification" content="LsizkA8P0AmycQcfICwrS5ITru606ZkzMSN_TrPbS7U" />
+  <title>Temporary Email - MARC-Tech</title>
   <meta name="robots" content="index, follow">
-  <title>Temporary Email + Envoi - MARC-Tech</title>
+  <link rel="canonical" href="https://temporary-email-black.vercel.app/">
 
   <style>
-    body { font-family: Arial, sans-serif; background: #f9f9f9; padding: 20px; color: #333; }
-    .email-box, .send-box { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    .email { font-weight: bold; color: #007bff; }
-    button { padding: 10px 15px; margin: 5px 0; background: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #0056b3; }
-    input, textarea { width: 100%; padding: 10px; margin: 5px 0 15px; border: 1px solid #ccc; border-radius: 5px; }
-    .message { margin-top: 10px; background: #eef; padding: 10px; border-radius: 5px; }
+    body{font-family:Arial,sans-serif;padding:20px;background:#f4f4f4;color:#333}
+    .email-box{margin-bottom:20px;background:#fff;padding:10px;border-radius:5px;box-shadow:0 2px 4px rgba(0,0,0,0.1)}
+    .email{font-weight:bold;color:#007bff}
+    button{padding:10px 15px;background-color:#007bff;color:white;border:none;border-radius:5px;cursor:pointer;font-size:14px}
+    button:hover{background-color:#0056b3}
+    .message{background:white;margin-top:10px;padding:10px;border:1px solid #ccc;border-radius:5px;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+    .footer{margin-top:40px;text-align:center;font-size:12px;color:#777}
+    .social-links{display:flex;justify-content:center;margin-top:20px}
+    .social-links a{margin:0 10px;display:block;width:40px;height:40px}
+    .social-links img{width:100%;height:100%}
   </style>
 </head>
 <body>
-  <h1>Email Temporaire & Envoi (MARC-Tech)</h1>
-
+  <h1>Temp Mail (via Marc-Tech)</h1>
   <div class="email-box">
-    <p>Email temporaire : <span class="email" id="emailDisplay"></span></p>
-    <button onclick="getMessages()">Actualiser</button>
-    <button onclick="copyEmail()">Copier l'email</button>
+    <p>Votre email temporaire : <span class="email" id="emailDisplay"></span></p>
+    <button onclick="gM()">Actualiser</button>
+    <button onclick="cE()">Copier l'email</button>
   </div>
-
   <div id="messages"></div>
-
-  <div class="send-box">
-    <h3>Envoyer un email</h3>
-    <label>Destinataire :</label>
-    <input type="email" id="toEmail" placeholder="ex: destinataire@mail.com" required>
-    <label>Expéditeur (votre email temporaire) :</label>
-    <input type="email" id="fromEmail" placeholder="ex: votremail@mailsac.com" required>
-    <label>Sujet :</label>
-    <input type="text" id="subject" placeholder="Sujet de l'email" required>
-    <label>Message :</label>
-    <textarea id="body" rows="4" placeholder="Tapez votre message ici..." required></textarea>
-    <button onclick="sendEmail()">Envoyer</button>
-    <div id="sendStatus"></div>
+  <div class="footer">
+    <p>&copy; Marc-Tech 2025 - Tous droits réservés.</p>
+    <p>Suivez-nous :</p>
+    <div class="social-links">
+      <a href="https://www.instagram.com/j.m.h.2024" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram">
+      </a>
+      <a href="https://whatsapp.com/channel/0029Vb6J7O684Om8DdNfvL2N" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+      </a>
+    </div>
   </div>
 
   <script>
-    let tempEmail = generateEmail();
-    document.getElementById("emailDisplay").textContent = tempEmail;
+    (function() {
+      const workerURL = 'https://purple-river-4bb3.mrc-tech.workers.dev';
 
-    function generateEmail() {
-      const random = Math.random().toString(36).substring(2, 10);
-      return `${random}@mailsac.com`;
-    }
+      let tE = gE();
+      document.getElementById("emailDisplay").textContent = tE;
 
-    function copyEmail() {
-      navigator.clipboard.writeText(tempEmail).then(() => {
-        alert("Email copié !");
-      });
-    }
+      function gE() {
+        const r = Math.random().toString(36).substring(2, 10);
+        return `${r}@mailsac.com`;
+      }
 
-    function getMessages() {
-      fetch(`https://holy-frog-e196.mrc-tech.workers.dev/messages?email=${tempEmail}`)
-        .then(res => res.json())
-        .then(data => {
-          const container = document.getElementById("messages");
-          container.innerHTML = "";
-          if (!data.length) {
-            container.innerHTML = "<p>Aucun message reçu pour l’instant.</p>";
-            return;
-          }
-          data.forEach(msg => {
-            const msgEl = document.createElement("div");
-            msgEl.className = "message";
-            msgEl.innerHTML = `<strong>De:</strong> ${msg.from}<br><strong>Sujet:</strong> ${msg.subject}<br>`;
-            container.appendChild(msgEl);
+      window.gM = function() {
+        fetch(`${workerURL}?email=${tE}`)
+          .then(res => res.json())
+          .then(m => {
+            const c = document.getElementById("messages");
+            c.innerHTML = "";
+            if (!m.length) {
+              c.innerHTML = "<p>Aucun message pour l'instant.</p>";
+              return;
+            }
+            m.forEach(m => {
+              const d = document.createElement("div");
+              d.className = "message";
+              d.innerHTML = `<p><strong>De :</strong> ${m.from}</p><p><strong>Sujet :</strong> ${m.subject}</p><button onclick="rM('${m._id}')">Lire</button><div id="body-${m._id}"></div>`;
+              c.appendChild(d);
+            });
           });
-        })
-        .catch(err => {
-          console.error(err);
-          alert("Erreur lors de la récupération des messages.");
+      }
+
+      window.rM = function(i) {
+        fetch(`${workerURL}?email=${tE}&id=${i}`)
+          .then(res => res.text())
+          .then(b => {
+            document.getElementById(`body-${i}`).innerHTML = `<pre>${b}</pre>`;
+          });
+      }
+
+      window.cE = function() {
+        const e = document.getElementById("emailDisplay").textContent;
+        navigator.clipboard.writeText(e).then(() => {
+          alert("L'email a été copié dans le presse-papiers !");
+        }).catch(err => {
+          console.error('Erreur lors de la copie de l\'email: ', err);
         });
-    }
-
-    function sendEmail() {
-      const sendTo = document.getElementById("toEmail").value;
-      const replyTo = document.getElementById("fromEmail").value;
-      const subject = document.getElementById("subject").value;
-      const body = document.getElementById("body").value;
-
-      const payload = {
-        sendTo: sendTo,
-        replyTo: replyTo,
-        isHtml: false,
-        title: subject,
-        body: body
-      };
-
-      fetch("https://holy-frog-e196.mrc-tech.workers.dev/send-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(payload)
-      })
-        .then(res => res.json())
-        .then(response => {
-          document.getElementById("sendStatus").innerHTML = response.success
-            ? "<p style='color:green;'>Email envoyé avec succès !</p>"
-            : "<p style='color:red;'>Échec de l'envoi de l'email.</p>";
-        })
-        .catch(err => {
-          console.error(err);
-          document.getElementById("sendStatus").innerHTML = "<p style='color:red;'>Erreur d’envoi.</p>";
-        });
-    }
+      }
+    })();
   </script>
 </body>
 </html>
