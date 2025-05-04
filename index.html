@@ -3,118 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Recevez un email temporaire gratuit en un clic avec Temporary Email - MARC-Tech." />
-  <meta name="keywords" content="email temporaire, temp mail, email jetable, marc-tech, mailsac" />
-  <meta name="author" content="Marc-Tech" />
-  <title>Temporary Email - MARC-Tech</title>
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://temporary-email-black.vercel.app/" />
-
+  <title>Temp Mail - Marc-Tech</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 20px;
-      background: #f4f4f4;
-      color: #333;
-    }
-    .email-box {
-      margin-bottom: 20px;
-      background: #fff;
-      padding: 10px;
-      border-radius: 5px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    .email {
-      font-weight: bold;
-      color: #007bff;
-    }
-    button {
-      padding: 10px 15px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .message {
-      background: white;
-      margin-top: 10px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    }
-    .footer {
-      margin-top: 40px;
-      text-align: center;
-      font-size: 12px;
-      color: #777;
-    }
-    .social-links {
-      display: flex;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    .social-links a {
-      margin: 0 10px;
-      display: block;
-      width: 40px;
-      height: 40px;
-    }
-    .social-links img {
-      width: 100%;
-      height: 100%;
-    }
+    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
+    .email-box { background: white; padding: 10px; border-radius: 5px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .email { font-weight: bold; color: #007bff; }
+    button { margin-right: 5px; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: #0056b3; }
+    .message { background: white; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    pre { background: #eee; padding: 10px; white-space: pre-wrap; }
   </style>
 </head>
 <body>
-  <h1>Temp Mail (via Marc-Tech)</h1>
+  <h1>Votre Email Temporaire</h1>
   <div class="email-box">
-    <p>Votre email temporaire : <span class="email" id="emailDisplay"></span></p>
+    <p>Email : <span id="emailDisplay" class="email"></span></p>
     <button onclick="getMessages()">Actualiser</button>
     <button onclick="copyEmail()">Copier l'email</button>
   </div>
 
-  <div id="messages">
-    <p>Aucun message pour l'instant.</p>
-  </div>
-
-  <div class="footer">
-    <p>&copy; Marc-Tech 2025 - Tous droits réservés.</p>
-    <p>Suivez-nous :</p>
-    <div class="social-links">
-      <a href="https://www.instagram.com/j.m.h.2024" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
-      </a>
-      <a href="https://whatsapp.com/channel/0029Vb6J7O684Om8DdNfvL2N" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
-      </a>
-    </div>
-  </div>
+  <div id="messages"><p>Aucun message pour l'instant.</p></div>
 
   <script>
-    const workerURL = "https://purple-river-4bb3.mrc-tech.workers.dev";
+    const workerURL = "https://lingering-grass-d9b0.mrc-tech.workers.dev"; // Ton Worker Cloudflare
     const tempEmail = generateEmail();
     document.getElementById("emailDisplay").textContent = tempEmail;
 
     function generateEmail() {
-      const random = Math.random().toString(36).substring(2, 10);
-      return `${random}@mailsac.com`;
+      return Math.random().toString(36).substring(2, 10) + "@mailsac.com";
     }
 
     function getMessages() {
       fetch(`${workerURL}?email=${tempEmail}`)
-        .then(response => response.json())
+        .then(res => res.json())
         .then(messages => {
-          const msgContainer = document.getElementById("messages");
-          msgContainer.innerHTML = "";
+          const container = document.getElementById("messages");
+          container.innerHTML = "";
 
           if (!messages.length) {
-            msgContainer.innerHTML = "<p>Aucun message pour l'instant.</p>";
+            container.innerHTML = "<p>Aucun message pour l'instant.</p>";
             return;
           }
 
@@ -127,29 +54,29 @@
               <button onclick="readMessage('${msg._id}')">Lire</button>
               <div id="body-${msg._id}"></div>
             `;
-            msgContainer.appendChild(div);
+            container.appendChild(div);
           });
         })
-        .catch(error => {
-          console.error("Erreur de récupération des messages :", error);
+        .catch(err => {
+          console.error("Erreur messages :", err);
         });
     }
 
     function readMessage(id) {
       fetch(`${workerURL}?email=${tempEmail}&id=${id}`)
-        .then(response => response.text())
+        .then(res => res.text())
         .then(body => {
           document.getElementById(`body-${id}`).innerHTML = `<pre>${body}</pre>`;
         })
-        .catch(error => {
-          console.error("Erreur de lecture du message :", error);
+        .catch(err => {
+          console.error("Erreur lecture :", err);
         });
     }
 
     function copyEmail() {
-      navigator.clipboard.writeText(tempEmail).then(() => {
-        alert("Email copié !");
-      });
+      navigator.clipboard.writeText(tempEmail)
+        .then(() => alert("Email copié !"))
+        .catch(() => alert("Erreur de copie"));
     }
   </script>
 </body>
