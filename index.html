@@ -107,6 +107,9 @@
                 })
             });
 
+            // Debug: Log the full response to see the error details
+            console.log(response.data);
+
             if (response.data && response.data.video_url) {
                 const downloadLink = response.data.video_url;
                 displayDownloadLink(downloadLink);
@@ -115,7 +118,12 @@
             }
         } catch (error) {
             document.getElementById("statusMessage").textContent = "Error occurred during video processing.";
-            console.error(error);
+            console.error('Error details:', error);
+            if (error.response) {
+                // API response error
+                console.error('Response error data:', error.response.data);
+                document.getElementById("statusMessage").textContent = `API Error: ${error.response.data.message || 'An error occurred.'}`;
+            }
         }
     }
 
