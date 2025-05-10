@@ -1,83 +1,133 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Temp Mail - Marc-Tech</title>
-  <style>
-    body { font-family: Arial; padding: 20px; background: #f4f4f4; }
-    .email-box { background: white; padding: 10px; border-radius: 5px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    .email { font-weight: bold; color: #007bff; }
-    button { margin-right: 5px; padding: 10px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-    button:hover { background: #0056b3; }
-    .message { background: white; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 5px; }
-    pre { background: #eee; padding: 10px; white-space: pre-wrap; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Downloader</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 60%;
+            margin: 50px auto;
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+        }
+        input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #statusMessage {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .downloads {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .downloads a {
+            display: block;
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+        }
+        .downloads a:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-  <h1>Votre Email Temporaire</h1>
-  <div class="email-box">
-    <p>Email : <span id="emailDisplay" class="email"></span></p>
-    <button onclick="getMessages()">Actualiser</button>
-    <button onclick="copyEmail()">Copier l'email</button>
-  </div>
 
-  <div id="messages"><p>Aucun message pour l'instant.</p></div>
+<div class="container">
+    <h1>Video Downloader</h1>
+    <form id="downloadForm">
+        <label for="videoURL">Enter Video URL</label>
+        <input type="url" id="videoURL" name="videoURL" required placeholder="Paste the video URL here">
+        <button type="submit">Download Video</button>
+    </form>
+    <div id="statusMessage"></div>
+    <div class="downloads" id="downloadsList"></div>
+</div>
 
-  <script>
-    const workerURL = "https://lingering-grass-d9b0.mrc-tech.workers.dev"; // Ton Worker Cloudflare
-    const tempEmail = generateEmail();
-    document.getElementById("emailDisplay").textContent = tempEmail;
+<script>
+    document.getElementById("downloadForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const videoURL = document.getElementById("videoURL").value;
 
-    function generateEmail() {
-      return Math.random().toString(36).substring(2, 10) + "@mailsac.com";
-    }
-
-    function getMessages() {
-      fetch(`${workerURL}?email=${tempEmail}`)
-        .then(res => res.json())
-        .then(messages => {
-          const container = document.getElementById("messages");
-          container.innerHTML = "";
-
-          if (!messages.length) {
-            container.innerHTML = "<p>Aucun message pour l'instant.</p>";
+        if (!videoURL) {
+            alert("Please enter a video URL!");
             return;
-          }
+        }
 
-          messages.forEach(msg => {
-            const div = document.createElement("div");
-            div.className = "message";
-            div.innerHTML = `
-              <p><strong>De :</strong> ${msg.from}</p>
-              <p><strong>Sujet :</strong> ${msg.subject}</p>
-              <button onclick="readMessage('${msg._id}')">Lire</button>
-              <div id="body-${msg._id}"></div>
-            `;
-            container.appendChild(div);
-          });
-        })
-        .catch(err => {
-          console.error("Erreur messages :", err);
-        });
+        document.getElementById("statusMessage").textContent = "Processing the video...";
+
+        // Call the API to download the video
+        downloadVideo(videoURL);
+    });
+
+    async function downloadVideo(url) {
+        try {
+            // Replace the API URL and key as needed
+            const response = await axios({
+                method: 'POST',
+                url: 'https://all-social-media-video-downloader.p.rapidapi.com/',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'x-rapidapi-host': 'all-social-media-video-downloader.p.rapidapi.com',
+                    'x-rapidapi-key': 'ab42dda446mshde4ba65d25b85fdp13b83ejsn3965c0519b7d'
+                },
+                data: new URLSearchParams({
+                    'url': encodeURIComponent(url)
+                })
+            });
+
+            if (response.data && response.data.video_url) {
+                const downloadLink = response.data.video_url;
+                displayDownloadLink(downloadLink);
+            } else {
+                document.getElementById("statusMessage").textContent = "Error: Could not retrieve the video.";
+            }
+        } catch (error) {
+            document.getElementById("statusMessage").textContent = "Error occurred during video processing.";
+            console.error(error);
+        }
     }
 
-    function readMessage(id) {
-      fetch(`${workerURL}?email=${tempEmail}&id=${id}`)
-        .then(res => res.text())
-        .then(body => {
-          document.getElementById(`body-${id}`).innerHTML = `<pre>${body}</pre>`;
-        })
-        .catch(err => {
-          console.error("Erreur lecture :", err);
-        });
+    function displayDownloadLink(url) {
+        const downloadLink = document.createElement('a');
+        downloadLink.href = url;
+        downloadLink.download = "downloaded_video.mp4"; // You can change the file extension if needed
+        downloadLink.textContent = "Click here to download the video";
+        document.getElementById('downloadsList').appendChild(downloadLink);
+        document.getElementById("statusMessage").textContent = "Download ready.";
     }
+</script>
 
-    function copyEmail() {
-      navigator.clipboard.writeText(tempEmail)
-        .then(() => alert("Email copié !"))
-        .catch(() => alert("Erreur de copie"));
-    }
-  </script>
 </body>
 </html>
